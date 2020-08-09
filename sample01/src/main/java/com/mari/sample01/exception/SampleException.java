@@ -6,8 +6,9 @@ public class SampleException extends RuntimeException {
 	
 	private HttpStatus code;
 	
-	public SampleException(String message) {
+	public SampleException(HttpStatus code, String message) {
 		super(message);
+		this.code = code;
 	}
 	
 	public void setCode(HttpStatus code) {

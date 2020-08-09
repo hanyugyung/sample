@@ -7,7 +7,6 @@ import lombok.Setter;
 
 /**
  * @apiNote sample common code
- * @author mari
  *
  */
 
