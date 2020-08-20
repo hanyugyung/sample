@@ -1,11 +1,11 @@
 package com.mari.sample01.exception;
 
-import org.springframework.http.HttpStatus;
+import com.mari.sample01.data.CmError;
 
 public class NotFoundException extends SampleException{
 	
-	public NotFoundException(HttpStatus code, String message) {
-		super(code, message);
+	public NotFoundException(CmError cm) {
+		super(cm.getStatus(), cm.getCmCode(), cm.getMessage());
 	}
 	
 }

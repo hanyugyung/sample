@@ -14,15 +14,23 @@ import lombok.Setter;
 @Setter
 public class SampleCmCode {
 	
-	private int code;
+	private HttpStatus status;
+	private String cmCode;
 	private String apiUrl;
 	private String message;
 	
 	public SampleCmCode() {
 	}
 	
-	public SampleCmCode(int code, String apiUrl, String message) {
-		this.code = code;
+	public SampleCmCode(HttpStatus status, String apiUrl, String message) {
+		this.status = status;
+		this.apiUrl = apiUrl;
+		this.message = message;
+	}
+	
+	public SampleCmCode(HttpStatus status, String cmCode, String apiUrl, String message) {
+		this.status = status;
+		this.cmCode = cmCode;
 		this.apiUrl = apiUrl;
 		this.message = message;
 	}

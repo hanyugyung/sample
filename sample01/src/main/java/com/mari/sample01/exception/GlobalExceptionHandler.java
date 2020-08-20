@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +16,7 @@ import com.mari.sample01.data.SampleCmCode;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
+	//Custom Error
 	@ExceptionHandler(SampleException.class)
 	public @ResponseBody ResponseEntity<Object> sampleErrorHandler(
 			HttpServletRequest request
@@ -22,11 +24,25 @@ public class GlobalExceptionHandler {
 		
 		String apiUrl = request.getRequestURI();
 		SampleException ex = (SampleException) e;
-		SampleCmCode commonCode = new SampleCmCode(ex.getCode().value(), apiUrl, e.getMessage());
+		SampleCmCode commonCode = new SampleCmCode(ex.getStatus(), ex.getCmCode(), apiUrl, ex.getMessage());
 		
-		return new ResponseEntity<>(commonCode, ex.getCode());
+		return new ResponseEntity<>(commonCode, ex.getStatus());
 	}
 	
+	//Access Denied
+	@ExceptionHandler(AccessDeniedException.class)
+	public @ResponseBody ResponseEntity<Object> exceptionHandler(
+			HttpServletRequest request
+			, AccessDeniedException e){
+		
+		String apiUrl = request.getRequestURI();
+		AccessDeniedException ex = (AccessDeniedException) e;
+		SampleCmCode commonCode = new SampleCmCode(HttpStatus.FORBIDDEN, apiUrl, ex.getMessage());
+		
+		return new ResponseEntity<>(commonCode, commonCode.getStatus());
+	}
+	
+	//Internal Server Error
 	@ExceptionHandler(Exception.class)
 	public @ResponseBody ResponseEntity<Object> exceptionHandler(
 			HttpServletRequest request
@@ -35,8 +51,7 @@ public class GlobalExceptionHandler {
 		
 		String apiUrl = request.getRequestURI();
 
-		//사용자 지정이 아닌 runtimeException 으로 떨어질 때는 기본 200 코드로 나가는 듯하여 500으로 떨어지게 고정함
-		SampleCmCode commonCode = new SampleCmCode(500, apiUrl, e.getMessage());
-		return new ResponseEntity<>(commonCode, HttpStatus.INTERNAL_SERVER_ERROR);
+		SampleCmCode commonCode = new SampleCmCode(HttpStatus.INTERNAL_SERVER_ERROR, apiUrl, e.getMessage());
+		return new ResponseEntity<>(commonCode, commonCode.getStatus());
 	}
 }

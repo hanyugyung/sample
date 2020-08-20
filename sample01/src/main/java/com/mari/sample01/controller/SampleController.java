@@ -4,34 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.mari.sample01.config.User;
+import com.mari.sample01.data.CmError;
 import com.mari.sample01.data.dto.SampleDto;
 import com.mari.sample01.exception.NotFoundException;
 
-@Controller
+@RestController
 public class SampleController {
 	
 	@GetMapping("/sample")
 	public String sample() throws Exception {
-		throw new NotFoundException(HttpStatus.NOT_FOUND, "NotFound!!");
-		
-		/*
-		 아래와 다른 결과가 리턴됨
-		 
-		 try{
-		 	throw new NotFoundException(HttpStatus.NOT_FOUND, "NotFound!!");
-		 }catch(Exception e){
-			 throw new Exception("Error!!");
-		 }
-		 */
+		throw new NotFoundException(CmError.CM_Resource_NotFound);
 	}
-	
-	@GetMapping("/limittedSample")
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/limittedSample")	
 	public List<SampleDto> getAllUserInfo(@AuthenticationPrincipal User user) {
 		
 		List<SampleDto> allUserInfo = new ArrayList<SampleDto>();
@@ -44,6 +36,7 @@ public class SampleController {
 		return allUserInfo;
 	}
 	
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/unlimittedSample")
 	public SampleDto getMyInfo(@AuthenticationPrincipal User user) {
 		
