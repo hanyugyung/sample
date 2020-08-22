@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mari.sample01.config.User;
 import com.mari.sample01.data.CmError;
-import com.mari.sample01.data.dto.SampleDto;
+import com.mari.sample01.data.res.SampleDto;
 import com.mari.sample01.exception.NotFoundException;
 
 @RestController
@@ -22,8 +22,8 @@ public class SampleController {
 		throw new NotFoundException(CmError.CM_Resource_NotFound);
 	}
 
-	@Secured("ROLE_ADMIN")
-	@GetMapping("/limittedSample")	
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
+	@GetMapping("/unlimittedSample")	
 	public List<SampleDto> getAllUserInfo(@AuthenticationPrincipal User user) {
 		
 		List<SampleDto> allUserInfo = new ArrayList<SampleDto>();
@@ -36,8 +36,8 @@ public class SampleController {
 		return allUserInfo;
 	}
 	
-	@Secured({"ROLE_ADMIN", "ROLE_USER"})
-	@GetMapping("/unlimittedSample")
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/limittedSample")
 	public SampleDto getMyInfo(@AuthenticationPrincipal User user) {
 		
 		List<String> myRoleLst = user.getAuthorities()

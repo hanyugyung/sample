@@ -1,4 +1,4 @@
-package com.mari.sample01.data.dto;
+package com.mari.sample01.data.res;
 
 import java.util.List;
 
