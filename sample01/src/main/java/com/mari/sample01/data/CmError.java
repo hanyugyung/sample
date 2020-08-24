@@ -9,6 +9,9 @@ public enum CmError {
 	
 	//400
 	
+	//401
+	CM_UnAuthenticated_Token(HttpStatus.UNAUTHORIZED, "C40101", "Unauthenticated User"),
+	
 	//403
 	
 	//404

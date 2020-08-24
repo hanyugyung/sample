@@ -28,9 +28,6 @@ public class JwtUtilImpl implements JwtUtil {
 	@Value("${CONFIG.JWT.SECRET}")
 	private String secretKey;
 	
-	@Value("${CONFIG.JWT.HEADER}")
-	private String header;
-	
 	@Value("${CONFIG.JWT.EXPIRED.TIME}")
 	private Long expiredTime;
 	
