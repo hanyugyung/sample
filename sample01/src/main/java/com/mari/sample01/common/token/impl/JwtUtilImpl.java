@@ -89,5 +89,13 @@ public class JwtUtilImpl implements JwtUtil {
 		
 		return false;
 	}
+	
+	@Override
+	public Claims getBodyFromToken(String token) {
+		return Jwts.parser()
+		  .setSigningKey(this.generateKey())
+		  .parseClaimsJws(token)
+		  .getBody();
+	}
 
 }

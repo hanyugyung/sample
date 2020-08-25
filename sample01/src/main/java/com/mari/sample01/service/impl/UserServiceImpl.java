@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
 	public UserInfo validateUser(UserReqDto user) {
 		if(user.getEmail().equals("admin@aaa.com") && user.getPassword().equals("1234")) {
 			UserInfo userInfo = UserInfo.builder()
+					.id(1L)
 					.email(user.getEmail())
 					.role("ADMIN")
 					.build();
