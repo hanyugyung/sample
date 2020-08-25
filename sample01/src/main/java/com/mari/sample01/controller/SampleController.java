@@ -20,7 +20,7 @@ public class SampleController {
 	public String sample() throws Exception {
 		throw new NotFoundException(CmError.CM_Resource_NotFound);
 	}
-
+//
 //	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 //	@GetMapping("/unlimittedSample")	
 //	public List<SampleDto> getAllUserInfo(@AuthenticationPrincipal User user) {
@@ -49,4 +49,35 @@ public class SampleController {
 //		dto.setRoles(myRoleLst);
 //		return dto;
 //	}
+	
+
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
+	@GetMapping("/unlimittedSample")	
+	public List<SampleDto> getAllUserInfo() {
+		
+		List<SampleDto> allUserInfo = new ArrayList<SampleDto>();
+		
+		for(int i = 0 ; i < 10 ; i++) {
+			SampleDto dto = new SampleDto();
+			dto.setEmail(String.format("email{%d}@aaa.com", i));	
+			allUserInfo.add(dto);
+		}
+		return allUserInfo;
+	}
+	
+	@Secured("ROLE_USER")
+	@GetMapping("/limittedSample")
+	public SampleDto getMyInfo() {
+		
+//		List<String> myRoleLst = user.getAuthorities()
+//									 .stream()
+//									 .map(a -> a.toString())
+//									 .collect(Collectors.toList());
+//		
+		SampleDto dto = new SampleDto();
+		dto.setEmail("admin@aaa.com");
+		//dto.setEmail(user.getEmail());
+		//dto.setRoles(myRoleLst);
+		return dto;
+	}
 }

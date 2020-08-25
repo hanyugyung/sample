@@ -4,8 +4,8 @@ import com.mari.sample01.data.CmError;
 
 public class NotFoundException extends SampleException{
 	
-	public NotFoundException(CmError cm) {
-		super(cm.getStatus(), cm.getCmCode(), cm.getMessage());
+	public NotFoundException(CmError error) {
+		super(error.getStatus(), error.getCmCode(), error.getMessage());
 	}
 	
 }

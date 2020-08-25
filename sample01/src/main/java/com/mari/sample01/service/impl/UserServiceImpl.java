@@ -9,7 +9,7 @@ import com.mari.sample01.data.CmError;
 import com.mari.sample01.data.dto.UserInfo;
 import com.mari.sample01.data.req.UserReqDto;
 import com.mari.sample01.data.res.UserResDto;
-import com.mari.sample01.exception.UnAuthenticateException;
+import com.mari.sample01.exception.SampleException;
 import com.mari.sample01.service.UserService;
 
 @Service
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	public UserResDto createToken(UserReqDto user) {
 		UserInfo userInfo = validateUser(user);
 		if(userInfo == null) {
-			throw new UnAuthenticateException(CmError.CM_UnAuthenticated_Token);
+			throw new SampleException(CmError.CM_UnAuthenticated_Token);
 		}
 		String token = jwtUtil.createToken(userInfo);
 		UserResDto userDto = UserResDto

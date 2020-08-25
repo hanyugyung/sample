@@ -50,13 +50,17 @@ public class JwtUtilImpl implements JwtUtil {
 	public <T> String createToken(T data) {
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("info", data);
+		claims.put("iss", iss);
 		
-		//exp - 토큰이 만료되는 시각, iat - 토큰이 발급된 시각
-		Date exp = new Date(expiredTime);
+		Date iat = new Date();
+		Date exp = new Date(iat.getTime() + expiredTime);
+		
+		claims.put("iat", iat);
+		claims.put("exp", exp);
 		
 		String token = Jwts.builder()
-				.setIssuer(iss)
-				.setExpiration(exp)
+				.setHeaderParam("alg", "HS256")
+				.setHeaderParam("typ", "JWT")
 				.setClaims(claims)
 				.signWith(SignatureAlgorithm.HS256, this.generateKey())
 				.compact();
@@ -67,15 +71,16 @@ public class JwtUtilImpl implements JwtUtil {
 	public Boolean validateToken(String token) {
 		try {
 			Jws<Claims> claims = Jwts.parser()
-					  .setSigningKey(secretKey)
+					  .setSigningKey(this.generateKey())
 					  .parseClaimsJws(token);
 			
-			Date exp = claims.getBody().getExpiration();
+			Date exp = new Date((Long)claims.getBody().get("exp"));
 			if(isTokenExpired(exp)) {
 				logger.info("Expired Token");
 				return false;
 			}
-			return true;
+			return claims.getBody().get("iss").equals(iss) ? true : false;
+
 		}catch(SignatureException se) {
 			logger.error("InValid Signature", se);
 		}catch(Exception e) {

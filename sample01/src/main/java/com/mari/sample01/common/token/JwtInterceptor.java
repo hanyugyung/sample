@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.mari.sample01.data.CmError;
-import com.mari.sample01.exception.UnAuthenticateException;
+import com.mari.sample01.exception.SampleException;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor{
@@ -26,8 +26,8 @@ public class JwtInterceptor implements HandlerInterceptor{
 		String token = request.getHeader(tokenHeader);
 		
 		if(token == null || !jwtUtil.validateToken(token)) {
-			//throw new UnAuthenticateException(CmError.CM_UnAuthenticated_Token);
-			return false;
+			throw new SampleException(CmError.CM_UnAuthenticated_Token);
+			//return false;
 		}
 		
 		return true;
