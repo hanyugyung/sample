@@ -1,16 +1,14 @@
 package com.mari.sample01.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mari.sample01.common.token.JwtUtil;
-
-import io.jsonwebtoken.Claims;
+import com.mari.sample01.data.dto.UserInfo;
 
 /**
  * @see UserDetails :: Spring security 에서 사용자의 정보를 담아두는 인터페이스 
@@ -24,14 +22,13 @@ public class User implements UserDetails{
 	private String email;
 	private List<GrantedAuthority> authorities;
 	
-	@Autowired
-	private JwtUtil jwtUtil;
-	
-	public User(String token) {
-		Claims tokenBody = jwtUtil.getBodyFromToken(token);
-		this.id = Long.parseLong((String) tokenBody.get("id"));
-		this.email = (String) tokenBody.get("email");
-		this.authorities.add(new SimpleGrantedAuthority(prefix + (String) tokenBody.get("role")));
+	public User(UserInfo info) {
+		
+		this.authorities = new ArrayList<GrantedAuthority>();
+		
+		this.id = info.getId();
+		this.email = info.getEmail();
+		this.authorities.add(new SimpleGrantedAuthority(prefix + info.getRole()));
 	}
 	
 	public User(Long id, String email, String role) {

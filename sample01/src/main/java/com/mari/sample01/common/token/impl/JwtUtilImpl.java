@@ -92,10 +92,17 @@ public class JwtUtilImpl implements JwtUtil {
 	
 	@Override
 	public Claims getBodyFromToken(String token) {
-		return Jwts.parser()
-		  .setSigningKey(this.generateKey())
-		  .parseClaimsJws(token)
-		  .getBody();
+		try {
+			return Jwts.parser()
+					  .setSigningKey(this.generateKey())
+					  .parseClaimsJws(token)
+					  .getBody();	
+		}catch(SignatureException se) {
+			logger.error("InValid Signature", se);
+		}catch(Exception e) {
+			logger.info("token validation fail", e);
+		}
+		return null;
 	}
 
 }
