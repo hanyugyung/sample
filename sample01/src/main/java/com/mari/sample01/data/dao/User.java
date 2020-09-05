@@ -17,6 +17,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,7 +54,7 @@ public class User extends Base {
 	public static User of(UserSignUpParam param) {
 		return User.builder()
 				.loginId(param.getLoginId())
-				.password(param.getPassword())
+				.password(new BCryptPasswordEncoder().encode(param.getPassword()))
 				.email(param.getEmail())
 				.name(param.getName())
 				.phoneNumber(param.getPhoneNumber())
