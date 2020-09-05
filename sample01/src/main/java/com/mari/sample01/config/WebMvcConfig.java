@@ -21,14 +21,10 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	private JwtInterceptor jwtInterceptor;
 	
 	private static final String[] EXCLUDE_PATHS = {
-	        "/api/login",
+	        "/api/login", "/api/signUp",
 			"/sample",
 			"/h2-console",
-			"/v2/api-docs",
-			"/swagger-ui.html",
-			"/swagger-resources/**",
-            "/webjars/springfox-swagger-ui/**",
-            "/swagger/**",
+			"/v2/api-docs", "/swagger-ui.html", "/swagger-resources/**", "/webjars/springfox-swagger-ui/**", "/swagger/**",
             "/error"
 	};
 	

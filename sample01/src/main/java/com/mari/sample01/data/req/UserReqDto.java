@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +43,17 @@ public class UserReqDto {
 		private String name;
 		@NotEmpty @Pattern(regexp = "^010[-](\\d{3}|\\d{4})[-](\\d{3}|\\d{4})$")	// 010-XXXX-XXXX
 		private String phoneNumber;
-		@NotEmpty
+		@JsonFormat(pattern = "yyyy-MM-dd")	//post 는 jsonformat, get 은 datetimeformat, @notEmpty 와 같이 쓰면 오류남
 		private LocalDate birth;
 	}
 }
+
+/**
+ * @NotEmpty 와 @JsonFormat 을 같이 쓸 때 다음과 같은 오류가 남
+ * no validator could be found for constraint 'javax.validation.constraints.notempty' validating type 'java.time.localdate'. check configuration for
+ * 
+ * 
+ * 
+ * 
+ */
+

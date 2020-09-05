@@ -3,6 +3,7 @@ package com.mari.sample01.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,18 @@ public class GlobalExceptionHandler {
 		logger.warn(String.format("%s", commonCode.toString()), e);
 		return new ResponseEntity<>(commonCode, commonCode.getStatus());
 	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public @ResponseBody ResponseEntity<Object> exceptionHandler(
+			HttpServletRequest request
+			, ConstraintViolationException e){
+		
+		String apiUrl = request.getRequestURI();
+		ConstraintViolationException ex = (ConstraintViolationException) e;
+		SampleCmCode commonCode = new SampleCmCode(HttpStatus.BAD_REQUEST, apiUrl, ex.getMessage());
+		logger.warn(String.format("%s", commonCode.toString()), e);
+		return new ResponseEntity<>(commonCode, commonCode.getStatus());
+	} 
 	
 	//Internal Server Error
 	@ExceptionHandler(Exception.class)

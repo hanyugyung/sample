@@ -2,12 +2,15 @@ package com.mari.sample01.service;
 
 import com.mari.sample01.data.dto.UserInfo;
 import com.mari.sample01.data.req.UserReqDto.UserLoginParam;
+import com.mari.sample01.data.req.UserReqDto.UserSignUpParam;
 import com.mari.sample01.data.res.UserResDto;
+import com.mari.sample01.data.res.UserResDto.UserLoginDto;
+import com.mari.sample01.data.res.UserResDto.UserSignUpDto;
 
 public interface UserService {
 
-	UserInfo validateUser(UserLoginParam param);
+	UserLoginDto createToken(UserLoginParam user);
 
-	UserResDto createToken(UserLoginParam user);
+	UserSignUpDto createUser(UserSignUpParam param);
 
 }

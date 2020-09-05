@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.mari.sample01.data.enums.UserRole;
 import com.mari.sample01.data.req.UserReqDto.UserSignUpParam;
@@ -20,10 +22,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-@Entity(name = "USER")
+@Entity
 public class User extends Base {
 	
-	@Column
+	@Column 
 	private String loginId;
 	
 	@Column
@@ -52,6 +54,7 @@ public class User extends Base {
 				.name(param.getName())
 				.phoneNumber(param.getPhoneNumber())
 				.birth(param.getBirth())
+				.role(UserRole.USER)
 				.build();
 	}
 	
