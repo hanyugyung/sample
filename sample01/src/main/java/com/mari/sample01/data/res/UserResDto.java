@@ -1,9 +1,7 @@
 package com.mari.sample01.data.res;
 
-import java.time.LocalDateTime;
 
 import com.mari.sample01.data.dao.User;
-import com.mari.sample01.data.res.UserResDto.UserSignUpDto.UserSignUpDtoBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +16,7 @@ public class UserResDto {
     @Builder
 	public static class UserLoginDto {
 		private String token;
-		private String userId;
+		private String name;
 	}
 	
 	@Getter

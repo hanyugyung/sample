@@ -1,6 +1,7 @@
 package com.mari.sample01.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,14 +11,12 @@ import com.mari.sample01.data.dao.User;
 import com.mari.sample01.data.dto.UserInfo;
 import com.mari.sample01.data.req.UserReqDto.UserLoginParam;
 import com.mari.sample01.data.req.UserReqDto.UserSignUpParam;
-import com.mari.sample01.data.res.UserResDto;
 import com.mari.sample01.data.res.UserResDto.UserLoginDto;
 import com.mari.sample01.data.res.UserResDto.UserSignUpDto;
 import com.mari.sample01.exception.SampleException;
 import com.mari.sample01.repository.UserRepository;
 import com.mari.sample01.service.UserService;
 
-import net.bytebuddy.description.ModifierReviewable.OfEnumeration;
 
 @Transactional
 @Service
@@ -38,27 +37,30 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private UserInfo validateUser(UserLoginParam param) {
-		if(param.getEmail().equals("admin@aaa.com") && param.getPassword().equals("1234")) {
-			UserInfo userInfo = UserInfo.builder()
-					.id(1L)
-					.email(param.getEmail())
-					.role("ADMIN")
-					.build();
-			return userInfo;
+		User one = userRepository
+			.findByLoginId(param.getLoginId())
+			.orElseThrow(() -> new SampleException(CmError.CM_Login_Fail));
+		
+		if(!new BCryptPasswordEncoder().matches(param.getPassword(), one.getPassword())) {
+			throw new SampleException(CmError.CM_Login_Fail);
 		}
-		return null;
+		
+		return UserInfo.builder()
+				.id(one.getId())
+				.loginId(one.getLoginId())
+				.name(one.getName())
+				.role(one.getRole())
+				.build();
 	}
 
 	@Override
 	public UserLoginDto createToken(UserLoginParam user) {
 		UserInfo userInfo = validateUser(user);
-		if(userInfo == null) {
-			throw new SampleException(CmError.CM_UnAuthenticated_Token);
-		}
 		String token = jwtUtil.createToken(userInfo);
 		UserLoginDto userDto = UserLoginDto
 				.builder()
 				.token(token)
+				.name(userInfo.getName())
 				.build();
 		return userDto;
 	}

@@ -23,7 +23,7 @@ public class UserReqDto {
     @Builder
 	public static class UserLoginParam {
 		@NotEmpty
-		private String email;
+		private String loginId;
 		@NotEmpty
 		private String password;
 	}

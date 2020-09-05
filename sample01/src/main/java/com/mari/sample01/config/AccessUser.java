@@ -19,7 +19,7 @@ public class AccessUser implements UserDetails{
 	private final String prefix = "ROLE_";
 	
 	private Long id;
-	private String email;
+	private String userId;
 	private List<GrantedAuthority> authorities;
 	
 	public AccessUser(UserInfo info) {
@@ -27,15 +27,15 @@ public class AccessUser implements UserDetails{
 		this.authorities = new ArrayList<GrantedAuthority>();
 		
 		this.id = info.getId();
-		this.email = info.getEmail();
+		this.userId = info.getLoginId();
 		this.authorities.add(new SimpleGrantedAuthority(prefix + info.getRole()));
 	}
 	
-	public AccessUser(Long id, String email, String role) {
+	public AccessUser(Long id, String userId, String role) {
 		
 		this.authorities.add(new SimpleGrantedAuthority(prefix + role));
 		this.id = id;
-		this.email = email;
+		this.userId = userId;
 		
 	}
 	
@@ -43,8 +43,8 @@ public class AccessUser implements UserDetails{
 		return this.id;
 	}
 	
-	public String getEmail() {
-		return this.email;
+	public String getUserId() {
+		return this.userId;
 	}
 	
 	@Override

@@ -32,10 +32,7 @@ public class UserController {
 	 * @access Permit ALL
 	 */
 	@PostMapping("/login")
-	public UserLoginDto login(@RequestBody @Valid UserLoginParam param, BindingResult binding) {
-		if(binding.hasErrors()) {
-			throw new SampleException(CmError.CM_BadRequest);
-		}
+	public UserLoginDto login(@RequestBody @Valid UserLoginParam param) {
 		return userService.createToken(param);
 	}
 	

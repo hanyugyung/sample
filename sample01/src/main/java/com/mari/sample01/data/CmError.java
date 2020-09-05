@@ -14,10 +14,11 @@ public enum CmError {
 	CM_UnAuthenticated_Token(HttpStatus.UNAUTHORIZED, "C40101", "Unauthenticated User"),
 	
 	//403
+	CM_Login_Fail(HttpStatus.FORBIDDEN, "C40301", "Login Fail"),
 	
 	//404
 	CM_Resource_NotFound(HttpStatus.NOT_FOUND, "C40401", "Sample Not Found"),
-	
+
 	//409
 	CM_LoginId_Conflict(HttpStatus.CONFLICT, "C40901", "LoginId Conflict"),
 	

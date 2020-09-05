@@ -46,7 +46,7 @@ public class SampleController {
 									 .collect(Collectors.toList());
 		
 		SampleDto dto = new SampleDto();
-		dto.setEmail(accessUser.getEmail());
+		dto.setEmail(accessUser.getUserId());
 		dto.setRoles(myRoleLst);
 		return dto;
 	}
