@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().sameOrigin();	// 이거 없으면 h2 웹 console 접속 시 시큐리티 때문에 접근 거부됐다함
 		http.csrf().disable();
 	}
 }

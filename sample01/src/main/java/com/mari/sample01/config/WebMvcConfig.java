@@ -1,6 +1,10 @@
 package com.mari.sample01.config;
 
+import org.h2.server.web.WebServlet;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,6 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	private static final String[] EXCLUDE_PATHS = {
 	        "/api/login",
 			"/sample",
+			"/h2-console",
 			"/v2/api-docs",
 			"/swagger-ui.html",
 			"/swagger-resources/**",
@@ -42,5 +47,13 @@ public class WebMvcConfig implements WebMvcConfigurer{
 			.addPathPatterns("/**")
 			.excludePathPatterns(EXCLUDE_PATHS);
 	}
+	
+    @Bean
+    ServletRegistrationBean<WebServlet> h2servletRegistration(){
+        ServletRegistrationBean<WebServlet> registrationBean = new ServletRegistrationBean<WebServlet>( new WebServlet());
+        registrationBean.addUrlMappings("/h2-console/*");
+        return registrationBean;
+    }
+
 	
 }

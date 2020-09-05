@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mari.sample01.common.token.JwtUtil;
-import com.mari.sample01.config.User;
+import com.mari.sample01.config.AccessUser;
 import com.mari.sample01.data.CmError;
 import com.mari.sample01.data.dto.UserInfo;
 import com.mari.sample01.exception.SampleException;
@@ -45,7 +45,7 @@ public class SecurityAuthenticationFilter extends OncePerRequestFilter {
 			ObjectMapper mapper = new ObjectMapper();
 			UserInfo info = mapper.convertValue(tokenBody.get("info"), UserInfo.class);
 			
-			User user = new User(info);
+			AccessUser user = new AccessUser(info);
 			
 			UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

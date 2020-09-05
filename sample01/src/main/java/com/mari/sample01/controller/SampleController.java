@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mari.sample01.config.User;
+import com.mari.sample01.config.AccessUser;
 import com.mari.sample01.data.CmError;
 import com.mari.sample01.data.res.SampleDto;
 import com.mari.sample01.exception.NotFoundException;
@@ -24,7 +24,7 @@ public class SampleController {
 
 	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/unlimittedSample")	
-	public List<SampleDto> getAllUserInfo(@AuthenticationPrincipal User user) {
+	public List<SampleDto> getAllUserInfo(@AuthenticationPrincipal AccessUser accessUser) {
 		
 		List<SampleDto> allUserInfo = new ArrayList<SampleDto>();
 		
@@ -38,15 +38,15 @@ public class SampleController {
 	
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/limittedSample")
-	public SampleDto getMyInfo(@AuthenticationPrincipal User user) {
+	public SampleDto getMyInfo(@AuthenticationPrincipal AccessUser accessUser) {
 		
-		List<String> myRoleLst = user.getAuthorities()
+		List<String> myRoleLst = accessUser.getAuthorities()
 									 .stream()
 									 .map(a -> a.toString())
 									 .collect(Collectors.toList());
 		
 		SampleDto dto = new SampleDto();
-		dto.setEmail(user.getEmail());
+		dto.setEmail(accessUser.getEmail());
 		dto.setRoles(myRoleLst);
 		return dto;
 	}
