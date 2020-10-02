@@ -19,9 +19,8 @@ import com.mari.sample01.data.res.UserResDto.UserSignUpDto;
 import com.mari.sample01.exception.SampleException;
 import com.mari.sample01.service.UserService;
 
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RestController
-@Validated
 public class UserController {
 	
 	@Autowired

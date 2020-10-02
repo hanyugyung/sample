@@ -27,22 +27,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User extends Base {
 	
 	@Column 
-	private String loginId;
+	private String loginId;		//로그인 id
 	
 	@Column
-	private String password;
+	private String password;	//암호
 	
 	@Column
-	private String email;
+	private String email;		//이메일
 	
 	@Column
-	private String name;
+	private String name;		//이름
 	
 	@Column
-	private String phoneNumber;
+	private String phoneNumber;	//연락처
 	
 	@Column
-	private LocalDate birth;
+	private LocalDate birth;	//생일
 	
 	@Column @Enumerated(EnumType.STRING)
 	private UserRole role;
