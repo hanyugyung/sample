@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mari.sample01.config.AccessUser;
 import com.mari.sample01.data.dao.Order;
+import com.mari.sample01.data.req.CommonReqDto;
+import com.mari.sample01.data.req.CommonReqDto.CommonListReqDto;
 import com.mari.sample01.data.req.OrderReqDto.NewOrderParam;
 import com.mari.sample01.facade.OrderFacade;
 
@@ -40,7 +42,11 @@ public class OrderController {
 			, Pageable pageable
 			, @AuthenticationPrincipal AccessUser user){
 		
-		return orderFacade.getList(pageable);
+		CommonListReqDto common = CommonListReqDto.builder()
+								.startDate(startDate)
+								.endDate(endDate)
+								.build();
+		return orderFacade.getList(common, pageable);
 	}
 	
 	/**
@@ -48,9 +54,17 @@ public class OrderController {
 	 */
 	@GetMapping("/user/list")
 	@Secured("ROLE_USER")
-	public Page<Order> getUserOrderList(@AuthenticationPrincipal AccessUser user){
-		
-		return null;
+	public Page<Order> getUserOrderList(
+			@RequestParam(required = false) LocalDate startDate
+			, @RequestParam(required = false) LocalDate endDate
+			, Pageable pageable
+			, @AuthenticationPrincipal AccessUser user){
+		CommonListReqDto common = CommonListReqDto.builder()
+				.id(user.getId())
+				.startDate(startDate)
+				.endDate(endDate)
+				.build();
+		return orderFacade.getList(common, pageable);
 	}
 	
 	@GetMapping("/user")
