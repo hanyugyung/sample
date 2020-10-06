@@ -1,12 +1,12 @@
 package com.mari.sample01.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mari.sample01.data.dao.Order;
-import com.mari.sample01.data.req.CommonReqDto.CommonListReqDto;
+import com.mari.sample01.data.req.CommonReqDto;
 import com.mari.sample01.repository.OrderRepository;
 import com.mari.sample01.service.OrderService;
 
@@ -17,8 +17,8 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepository orderRepository;
 	
 	@Override
-	public Page<Order> getList(CommonListReqDto common, Pageable pageable) {
-		return orderRepository.findAll(pageable);
+	public List<Order> getList(CommonReqDto common) {
+		return orderRepository.getOrderList(common);
 	}
 
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mari.sample01.config.AccessUser;
 import com.mari.sample01.data.dao.Order;
 import com.mari.sample01.data.req.CommonReqDto;
-import com.mari.sample01.data.req.CommonReqDto.CommonListReqDto;
 import com.mari.sample01.data.req.OrderReqDto.NewOrderParam;
 import com.mari.sample01.facade.OrderFacade;
 
@@ -39,14 +39,20 @@ public class OrderController {
 	public Page<Order> getAllOrderList(
 			@RequestParam(required = false) LocalDate startDate
 			, @RequestParam(required = false) LocalDate endDate
-			, Pageable pageable
+			, @RequestParam(required = false, defaultValue = "id") List<String> sortList
+			, @RequestParam(required = false, defaultValue = "1") int page
+			, @RequestParam(required = false, defaultValue = "50") int size
 			, @AuthenticationPrincipal AccessUser user){
 		
-		CommonListReqDto common = CommonListReqDto.builder()
+		CommonReqDto common = CommonReqDto.builder()
 								.startDate(startDate)
 								.endDate(endDate)
+								.page(page)
+								.size(size)
+								.sortList(sortList)
 								.build();
-		return orderFacade.getList(common, pageable);
+		List<Order> orderList = orderFacade.getList(common);
+		return new PageImpl<>(orderList);
 	}
 	
 	/**
@@ -57,14 +63,20 @@ public class OrderController {
 	public Page<Order> getUserOrderList(
 			@RequestParam(required = false) LocalDate startDate
 			, @RequestParam(required = false) LocalDate endDate
-			, Pageable pageable
+			, @RequestParam(required = false) List<String> sortList
+			, @RequestParam(required = false) int page
+			, @RequestParam(required = false) int size
 			, @AuthenticationPrincipal AccessUser user){
-		CommonListReqDto common = CommonListReqDto.builder()
+		CommonReqDto common = CommonReqDto.builder()
 				.id(user.getId())
 				.startDate(startDate)
 				.endDate(endDate)
+				.page(page)
+				.size(size)
+				.sortList(sortList)
 				.build();
-		return orderFacade.getList(common, pageable);
+		List<Order> orderList = orderFacade.getList(common);
+		return new PageImpl<>(orderList);
 	}
 	
 	@GetMapping("/user")

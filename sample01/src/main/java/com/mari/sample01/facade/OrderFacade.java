@@ -1,13 +1,12 @@
 package com.mari.sample01.facade;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 import com.mari.sample01.data.dao.Order;
-import com.mari.sample01.data.req.CommonReqDto.CommonListReqDto;
+import com.mari.sample01.data.req.CommonReqDto;
 
 public interface OrderFacade {
 
-	Page<Order> getList(CommonListReqDto common, Pageable pageable);
+	List<Order> getList(CommonReqDto common);
 
 }
