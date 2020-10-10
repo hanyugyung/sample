@@ -21,6 +21,15 @@ import com.mysema.query.types.path.PathBuilder;
 public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 	
 	private @PersistenceContext EntityManager entityManager;
+	
+	@SuppressWarnings("rawtypes")
+	private OrderSpecifier[] convertListToArray(List<OrderSpecifier> lst) {
+		OrderSpecifier[] arr = new OrderSpecifier[lst.size()];
+		for(int i = 0 ; i < lst.size() ; i++) {
+			arr[i] = lst.get(i);
+		}
+		return arr;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -33,7 +42,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 		if(common.getId() != null) builder.and(order.userId.eq(common.getId()));
 		
 		List<OrderSpecifier> orderBy = new LinkedList<>();
-		PathBuilder<Order> entityPath = new PathBuilder<>(Order.class, "order");
+		PathBuilder<Order> entityPath = new PathBuilder<>(Order.class, "order1");
 		for(Sort.Order o : common.getSort()) {
 			orderBy.add(new OrderSpecifier(com.mysema.query.types.Order.DESC, entityPath.get(o.getProperty())));
 		}
@@ -43,16 +52,10 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 			orderBy.add(new OrderSpecifier(com.mysema.query.types.Order.valueOf(o.getDirection().name()), entityPath.get(o.getProperty())));
 		}
 		
-		//OrderSpecifier[] orderByArr = orderBy.toArray();
-		OrderSpecifier[] orderByArr = new OrderSpecifier[orderBy.size()];
-		for(int i = 0 ; i < orderBy.size() ; i++) {
-			orderByArr[i] = orderBy.get(i);
-		}
-		
 		List<Order> orders = 
 				query.from(order)
 					.where(builder)
-					.orderBy(orderByArr)
+					.orderBy(convertListToArray(orderBy))
 					.offset((common.getPage()-1)*common.getSize())
 					.limit(common.getSize())
 					.list(order);

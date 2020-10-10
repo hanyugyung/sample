@@ -7,6 +7,9 @@ import lombok.Getter;
 @Getter
 public enum CmError {
 	
+	//200
+	CM_Success(HttpStatus.OK, "C20001", "Success"),
+	
 	//400
 	CM_BadRequest(HttpStatus.BAD_REQUEST, "C40001", "Bad Request"),
 	
